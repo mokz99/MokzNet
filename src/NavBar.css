@@ -1,0 +1,45 @@
+.navbar {
+  display: flex;
+  flex-direction: column; /* Stacks elements vertically */
+  align-items: center;    /* Centers everything horizontally */
+  justify-content: center;
+  height: 20vh;           /* Your requested height */
+  background-color: #1a1a1a; /* Dark theme looks great for .net sites */
+  color: white;
+  width: 100%;
+  border-bottom: 1px solid #333;
+}
+
+.nav-brand h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  text-transform: lowercase; /* Optional: gives that techy .net feel */
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 0 0; /* Space between title and links */
+  gap: 30px;          /* Space between individual links */
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #ccc;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: white;
+}
+
+.nav-icon {
+  height: 1.2em; /* Scales perfectly with your link text */
+  width: auto;
+}
