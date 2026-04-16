@@ -2,4 +2,4 @@
 
 My own little world...
 
-- [mokz.net](mokz.net) ✨
+- [mokz.net](https://mokz.net) ✨
