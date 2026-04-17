@@ -3,8 +3,8 @@
   flex-direction: column; /* Stacks elements vertically */
   align-items: center;    /* Centers everything horizontally */
   justify-content: center;
-  height: 20vh;           /* Your requested height */
-  background-color: #1a1a1a; /* Dark theme looks great for .net sites */
+  height: 20vh;
+  background-color: var(--navbar-bg);
   color: white;
   width: 100%;
   border-bottom: 1px solid #333;
