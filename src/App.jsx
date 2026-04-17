@@ -19,7 +19,7 @@ function App() {
           <h2>About Me</h2><br/>
           <p>
             Hello i am Simon Mok :=) 💪😸👍<br/>
-            Use use the name Mok and variation of it, as it comes from an old alias "Mokkil".<br/><br/>
+            Use use the name Mok and variation of it like Mokz99, as it comes from an old alias "Mokkil".<br/><br/>
             My hobbies are:<br/>
             &bull; gaming - mostly world of warcraft. ⚔️<br/>
             &bull; drawing - mostly on paper, i suck at digital art. ✏️<br/>
