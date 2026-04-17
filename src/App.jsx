@@ -4,6 +4,7 @@ import githubLogo from './assets/github.png'
 import dummyDashboard from './assets/dummy_dashboard.png'
 import banana from './assets/peanutbutter_jelly_time.png'
 import backgroundImage from './assets/mokznet_star_sky_1.png'
+import monitorImage from './assets/monitor.png'
 import './App.css'
 import Navbar from './Navbar';
 
@@ -15,8 +16,9 @@ function App() {
       <Navbar />
       <section id="about_and_meme">
         <div id="about">
-          <h2>About</h2><br/>
-          <p>Hello i am Simon Mok :=) 💪😸👍<br/>
+          <h2>About Me</h2><br/>
+          <p>
+            Hello i am Simon Mok :=) 💪😸👍<br/>
             Use use the name Mok and variation of it, as it comes from an old alias "Mokkil".<br/><br/>
             My hobbies are:<br/>
             &bull; gaming - mostly world of warcraft. ⚔️<br/>
@@ -43,17 +45,23 @@ function App() {
             </li>
           </ul>
         </div>
-        <div id="meme">
-          <h2>Funi meme</h2>
-          <img src={banana} alt="Dashboard" style={{ height: '10em', width: 'auto' }}/>
+        <div>
+          <h2>Server Dashboard</h2><br/>
+            <p>
+              This site, "Mokz.Net", is hosted on my own raspberry pi in my living room.<br/>
+              Here is a little dashboard where you can see the statistics and health of the server itself.<br/><br/>
+          </p>
+          <img src={dummyDashboard} alt="Dashboard" style={{ height: '15em', width: 'auto' }}/>
         </div>
       </section>
       
       <section id="spacer"></section>
       <section id="dashboard">
-        <div>
-          <h2>Server Dashboard</h2>
-          <img src={dummyDashboard} alt="Dashboard" style={{ height: '20em', width: 'auto' }}/>
+
+                <div id="meme">
+          <h2>Random xD</h2>
+          <img src={monitorImage} alt="Dashboard" style={{ height: '25em', width: 'auto' }}/>
+          <img src={banana} alt="Dashboard" style={{ height: '10em', width: 'auto' }}/>
         </div>
       </section>
       <section id="spacer"></section>
