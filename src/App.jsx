@@ -15,8 +15,19 @@ function App() {
       <Navbar />
       <section id="about_and_meme">
         <div id="about">
-          <h2>About</h2>
-          <p>Hello i am Simon :=) 💪😻💪</p>
+          <h2>About</h2><br/>
+          <p>Hello i am Simon Mok :=) 💪😸👍<br/>
+            Use use the name Mok and variation of it, as it comes from an old alias "Mokkil".<br/><br/>
+            My hobbies are:<br/>
+            &bull; gaming - mostly world of warcraft. ⚔️<br/>
+            &bull; drawing - mostly on paper, i suck at digital art. ✏️<br/>
+            &bull; technology - this is also my day job. 💻<br/><br/>
+
+            I used to program alot of games in unity when i was younger, as i like game development because it intersects with all my hobbies.<br/>
+            And i want to get back into it again and document the journey on youtube.<br/><br/>
+
+            You can find my youtube account here, and also my github where this repository "MokzNet" is public if you want to look.
+          </p>
           <ul>
             <li>
               <a href="https://www.youtube.com/@mokz99" target="_blank" className="hover-effect">
