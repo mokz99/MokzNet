@@ -23,6 +23,6 @@ app.get('/api/ram', async (req, res) => {
 });
 
 // Start server
-app.listen(5000, () => {
+app.listen(8081, () => {
   console.log('Backend server running on http://localhost:5000');
 });
