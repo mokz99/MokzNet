@@ -53,7 +53,6 @@ function App() {
               Here is a little dashboard where you can see the statistics and health of the server itself.<br/><br/>
           </p>
           <ServerDashboard />
-          <img src={dummyDashboard} alt="Dashboard" style={{ height: '15em', width: 'auto' }}/>
         </div>
       </section>
       

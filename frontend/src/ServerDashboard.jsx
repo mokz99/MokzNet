@@ -68,7 +68,7 @@ const ServerDashboard = () => {
       padding: '15px',
       fontFamily: '"VT323", monospace',
       fontSize: '22px',
-      textShadow: '0 0 25px rgba(255, 165, 0, 0.4)',
+      textShadow: '0 0 20px rgba(255, 165, 0, 0.3)',
     }}>
         <div style={{ 
   display: 'flex', 
