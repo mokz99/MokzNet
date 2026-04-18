@@ -56,6 +56,32 @@ app.get('/api/cpu', async (req, res) => {
   }
 });
 
+// Uptime endpoint (uptime seconds)
+app.get('/api/uptime', async (req, res) => {
+  try {
+    const timeData = await si.time();
+    res.json({
+      uptime: formatUptime(timeData.uptime)
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to read uptime" });
+  }
+});
+
+// Helper function to format seconds into "1d 4h 20m"
+function formatUptime(seconds) {
+  const days = Math.floor(seconds / (3600 * 24));
+  const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  
+  let result = "";
+  if (days > 0) result += `${days}d `;
+  if (hours > 0) result += `${hours}h `;
+  result += `${minutes}m`;
+  
+  return result;
+}
+
 // Start server
 app.listen(8081, () => {
   console.log('Backend server running on http://localhost:8081');
