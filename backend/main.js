@@ -22,6 +22,24 @@ app.get('/api/ram', async (req, res) => {
   }
 });
 
+// CPU endpoint (model, cores, load, temp)
+app.get('/api/cpu', async (req, res) => {
+  try {
+    const cpuInfo = await si.cpu();
+    const load = await si.currentLoad();
+    const temp = await si.cpuTemperature();
+
+    res.json({
+      model: `${cpuInfo.manufacturer} ${cpuInfo.brand}`,
+      cores: cpuInfo.cores,
+      load: load.currentLoad.toFixed(1), // Total CPU load in %
+      temp: temp.main
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to read CPU" });
+  }
+});
+
 // Start server
 app.listen(8081, () => {
   console.log('Backend server running on http://localhost:8081');
