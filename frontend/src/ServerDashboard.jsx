@@ -17,8 +17,7 @@ const ServerDashboard = () => {
       borderRadius: '5px',
       padding: '15px',
       fontFamily: '"VT323", monospace', 
-      fontSize: '25px', 
-      letterSpacing: '1px',
+      fontSize: '22px', 
     }}>
       <p style={{ margin: 0}}>
         <span style={{ color: 'var(--terminal-orange-text)' }}>mokz</span>
