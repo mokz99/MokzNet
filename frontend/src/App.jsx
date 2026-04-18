@@ -7,6 +7,7 @@ import backgroundImage from './assets/mokznet_star_sky_1.png'
 import monitorImage from './assets/monitor.png'
 import './App.css'
 import Navbar from './NavBar';
+import ServerDashboard from './ServerDashboard';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -51,6 +52,7 @@ function App() {
               This site, "Mokz.Net", is hosted on my own raspberry pi in my living room.<br/>
               Here is a little dashboard where you can see the statistics and health of the server itself.<br/><br/>
           </p>
+          <ServerDashboard />
           <img src={dummyDashboard} alt="Dashboard" style={{ height: '15em', width: 'auto' }}/>
         </div>
       </section>
