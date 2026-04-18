@@ -6,6 +6,22 @@ const app = express();
 
 app.use(cors());
 
+// Disk endpoint (total, used, percent)
+app.get('/api/disk', async (req, res) => {
+  try {
+    const data = await si.fsSize();
+    const mainDrive = data[0]; // Get the primary partition
+
+    res.json({
+      total: (mainDrive.size / 1024 / 1024 / 1024).toFixed(2),
+      used: (mainDrive.used / 1024 / 1024 / 1024).toFixed(2),
+      percent: mainDrive.use.toFixed(1)
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to read Disk space" });
+  }
+});
+
 // Ram endpoint (total, used, percent)
 app.get('/api/ram', async (req, res) => {
   try {
