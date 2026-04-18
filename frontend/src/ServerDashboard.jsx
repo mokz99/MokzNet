@@ -9,7 +9,7 @@ const ServerDashboard = () => {
   const fetchStats = async () => {
       try {
         // 1. Fire all three requests in parallel
-        const [ramRes, cpuRes, diskRes] = await Promise.all([
+        const [diskRes, ramRes, cpuRes] = await Promise.all([
             fetch('https://api.mokz.net/api/disk'),
             fetch('https://api.mokz.net/api/ram'),
             fetch('https://api.mokz.net/api/cpu'),
