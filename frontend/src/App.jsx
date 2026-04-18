@@ -6,7 +6,7 @@ import banana from './assets/peanutbutter_jelly_time.png'
 import backgroundImage from './assets/mokznet_star_sky_1.png'
 import monitorImage from './assets/monitor.png'
 import './App.css'
-import Navbar from './Navbar';
+import Navbar from './NavBar';
 
 function App() {
   const [count, setCount] = useState(0)
