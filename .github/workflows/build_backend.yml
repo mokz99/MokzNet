@@ -30,5 +30,6 @@ jobs:
           context: ./backend
           platforms: linux/arm/v7,linux/arm64
           push: true
-          # This saves it as: ghcr.io/mokz99/mokznet_backend:latest
+          # i have linked my personal package for this to the repo, so it shows up here: 
+          # https://github.com/mokz99/MokzNet/pkgs/container/mokznet-backend
           tags: ghcr.io/${{ github.actor }}/mokznet-backend:latest
