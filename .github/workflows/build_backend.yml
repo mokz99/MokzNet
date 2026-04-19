@@ -35,6 +35,8 @@ jobs:
             type=raw,value=latest
             type=semver,pattern={{version}}
 
+      # i have linked my personal package for this to the repo, so it shows up here: 
+      # https://github.com/mokz99/MokzNet/pkgs/container/mokznet-backend
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
