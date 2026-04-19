@@ -30,10 +30,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.actor }}/mokznet-frontend
+          images: ghcr.io/${{ github.actor }}/mokznet-backend
           tags: |
             type=raw,value=latest
-            type=semver,pattern={{version}}
+            type=ref,event=tag
 
       # i have linked my personal package for this to the repo, so it shows up here: 
       # https://github.com/mokz99/MokzNet/pkgs/container/mokznet-frontend
