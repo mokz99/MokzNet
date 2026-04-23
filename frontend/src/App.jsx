@@ -22,7 +22,7 @@ function App() {
         <div id="about">
           <h2>About Me</h2><br />
           <p>
-            Hello i am Simon Mok 😸👍<br /><br />
+            Hello i am Simon 😸👍<br /><br />
             My hobbies are:<br />
             &bull; gaming - mainly world of warcraft. ⚔️<br />
             &bull; drawing - not great at it but i still enjoy it. ✏️<br />
