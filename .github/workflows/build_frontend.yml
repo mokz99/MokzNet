@@ -1,8 +1,9 @@
 name: Build And Publish Frontend
 
-# this workflow is run manually, not automated
 on:
-  workflow_dispatch:
+  workflow_dispatch: # manual only trigger and tags with latest version
+  release:
+    types: [published] # triggers when "Publish Release" and tags image with release version
 
 jobs:
   build:
@@ -24,12 +25,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.MOKZ99_GHCR }}
 
+      # Sets up tags based on manual or release trigger
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.actor }}/mokznet-frontend
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+
+      # i have linked my personal package for this to the repo, so it shows up here: 
+      # https://github.com/mokz99/MokzNet/pkgs/container/mokznet-frontend
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           platforms: linux/arm/v7,linux/arm64
           push: true
-          # i have linked my personal package for this to the repo, so it shows up here: 
-          # https://github.com/mokz99/MokzNet/pkgs/container/mokznet-frontend
-          tags: ghcr.io/${{ github.actor }}/mokznet-frontend:latest
+          # takes data from stage above
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
