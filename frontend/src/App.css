@@ -5,8 +5,12 @@ body {
 #highlight_and_random {
   background: var(--default-bg);
   display: flex;
-  border-top: 1px solid var(--border);
   text-align: left;
+
+  border-bottom: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
 
   & > div {
     flex: 1 1 0;
@@ -31,8 +35,12 @@ body {
 #about_and_dashboard {
   background: var(--default-bg);
   display: flex;
-  border-top: 1px solid var(--border);
   text-align: left;
+
+  border-top: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
 
   & > div {
     flex: 1 1 0;
@@ -55,12 +63,25 @@ body {
 }
 
 #about {
-  border-right: 1px solid var(--border);
+  border-right: var(--default-border-size);
+  border-bottom: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
+}
 
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+#dashboard {
+  border-bottom: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
+}
+
+#random {
+  border-right: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
 }
 
 #hover-effect {

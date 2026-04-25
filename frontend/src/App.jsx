@@ -2,7 +2,6 @@ import { useState } from 'react'
 // images
 import youtubeLogo from './assets/youtube.png'
 import githubLogo from './assets/github.png'
-import backgroundImage from './assets/mokznet_star_sky_1.png'
 
 // code stuff
 import './App.css'
@@ -49,7 +48,7 @@ function App() {
             </li>
           </ul>
         </div>
-        <div>
+        <div id="dashboard">
           <h2>Server Dashboard</h2><br />
           <p>
             This site, "Mokz.Net", is hosted on my own raspberry pi in my living room.<br />
@@ -60,11 +59,11 @@ function App() {
       </section>
 
       <section id="highlight_and_random">
-        <div id="about">
+        <div id="random">
           <h2>Random lol</h2>
           <RandomDashboard />
         </div>
-        <div id="about">
+        <div>
           <h2>Highlighted Project</h2><br />
           <p>
             Check this out :=)<br /><br />
