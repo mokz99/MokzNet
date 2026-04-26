@@ -84,6 +84,10 @@ body {
   box-shadow: var(--default-border-shadow);
 }
 
+#highlight {
+  box-shadow: var(--default-border-shadow);
+}
+
 #hover-effect {
 display: inline-flex;
   align-items: center;
@@ -148,10 +152,6 @@ background-color: rgba(255, 255, 255, 0.1); /* Subtle light highlight */
 }
 
 #spacer {
-  background: var(--default-bg);
+  background: var(--navbar-bg);
   height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
 }

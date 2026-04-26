@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import randomCow from './assets/mokznet_random_cow_1.gif'
 import peanutButterJellyTime from './assets/peanutbutterjellytime.gif'
+import randomCow from './assets/mokznet_random_cow_1.gif'
 import dragonKnight from './assets/dragon_knight_art.gif'
 
 const RandomDashboard = () => {
-  const images = [randomCow, peanutButterJellyTime, dragonKnight];
+  const images = [peanutButterJellyTime, randomCow, dragonKnight];
   const [currentIdx, setCurrentIdx] = useState(0);
 
   const showNewImage = () => {

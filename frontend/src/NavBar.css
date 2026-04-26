@@ -7,7 +7,6 @@
   background-color: var(--navbar-bg);
   color: white;
   width: 100%;
-  border-bottom: 1px solid #333;
 }
 
 .nav-brand h1 {
