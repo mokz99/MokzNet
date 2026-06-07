@@ -10,6 +10,54 @@ const app = express();
 
 app.use(cors());
 
+// Helper function to format seconds into "1d 4h 20m"
+function formatUptime(seconds) {
+  const days = Math.floor(seconds / (3600 * 24));
+  const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  
+  let result = "";
+  if (days > 0) result += `${days}d `;
+  if (hours > 0) result += `${hours}h `;
+  result += `${minutes}m`;
+  
+  return result;
+}
+
+// Helper method to store image files for guest book
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'guestbook_avatar_images/'); 
+  },
+  filename: (req, file, cb) => {
+    const rawUsername = req.body.username || 'anonymous';
+    
+    //clean username. no hacking allowed! only letters/numbers are permitted.
+    let cleanUsername = rawUsername
+      .toLowerCase()
+      .replace(/\s+/g, '-') 
+      .replace(/[^a-z0-9_-]/g, '');
+
+    //If the user used ONLY emojis/special chars, cleanUsername becomes empty and we call him guest.
+    if (!cleanUsername || cleanUsername === '-') {
+      cleanUsername = 'guest';
+    }
+
+    //prevent too long file names.
+    cleanUsername = cleanUsername.substring(0, 30);
+
+    const timestamp = Date.now();
+    const ext = path.extname(file.originalname);
+
+    //Example output: "hacker-man_1717800000000.png"
+    const uniqueFilename = `${cleanUsername}_${timestamp}${ext}`;
+    
+    cb(null, uniqueFilename);
+  }
+});
+
+const upload = multer({ storage: storage });
+
 // Disk endpoint (total, used, percent)
 app.get('/api/disk', async (req, res) => {
   try {
@@ -148,52 +196,6 @@ app.get('/api/guestbook/entries', (req, res) => {
   } catch (error) {
     console.error('Error fetching guestbook entries:', error);
     return res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Helper function to format seconds into "1d 4h 20m"
-function formatUptime(seconds) {
-  const days = Math.floor(seconds / (3600 * 24));
-  const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  
-  let result = "";
-  if (days > 0) result += `${days}d `;
-  if (hours > 0) result += `${hours}h `;
-  result += `${minutes}m`;
-  
-  return result;
-}
-
-// Helper method to store image files for guest book
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'guestbook_avatar_images/'); 
-  },
-  filename: (req, file, cb) => {
-    const rawUsername = req.body.username || 'anonymous';
-    
-    //clean username. no hacking allowed! only letters/numbers are permitted.
-    let cleanUsername = rawUsername
-      .toLowerCase()
-      .replace(/\s+/g, '-') 
-      .replace(/[^a-z0-9_-]/g, '');
-
-    //If the user used ONLY emojis/special chars, cleanUsername becomes empty and we call him guest.
-    if (!cleanUsername || cleanUsername === '-') {
-      cleanUsername = 'guest';
-    }
-
-    //prevent too long file names.
-    cleanUsername = cleanUsername.substring(0, 30);
-
-    const timestamp = Date.now();
-    const ext = path.extname(file.originalname);
-
-    //Example output: "hacker-man_1717800000000.png"
-    const uniqueFilename = `${cleanUsername}_${timestamp}${ext}`;
-    
-    cb(null, uniqueFilename);
   }
 });
 
