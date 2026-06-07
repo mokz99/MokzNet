@@ -23,6 +23,8 @@ docker run -d \
   -p $PORT:$PORT \
   -v /proc:/proc:ro \
   -v /sys:/sys:ro \
+  -v /home/pi/mokznet/mokznet.db:/app/mokznet.db \
+  -v /home/pi/mokznet/guestbook_avatar_images:/app/guestbook_avatar_images \
   --restart unless-stopped \
   $IMAGE_NAME
 
