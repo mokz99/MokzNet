@@ -134,7 +134,7 @@ app.post('/api/guestbook/entries', upload.single('avatar'), (req, res) => {
     const avatar_filename = req.file ? req.file.filename : null;
 
     const stmt = db.prepare(`
-      INSERT INTO guestbook_entries (username, message, avatar_filename)
+      INSERT INTO guestbook (username, message, avatar_filename)
       VALUES (?, ?, ?)
     `);
     const result = stmt.run(username, message, avatar_filename);
@@ -164,7 +164,7 @@ app.get('/api/guestbook/entries', (req, res) => {
     //Query the database for ACTIVE (unhidden) entries, sorted by newest first.
     const entriesStmt = db.prepare(`
       SELECT id, username, message, avatar_filename, created_at 
-      FROM guestbook_entries 
+      FROM guestbook 
       WHERE is_hidden = 0 
       ORDER BY created_at DESC 
       LIMIT ? OFFSET ?
@@ -174,7 +174,7 @@ app.get('/api/guestbook/entries', (req, res) => {
     //Get the total count of unhidden posts. This is used for the frontend to know how many pages will exist.
     const countStmt = db.prepare(`
       SELECT COUNT(*) AS total 
-      FROM guestbook_entries 
+      FROM guestbook 
       WHERE is_hidden = 0
     `);
     const totalEntries = countStmt.get().total;
