@@ -9,6 +9,7 @@ const db = new Database(path.join(__dirname, 'mokznet.db'));
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 // Helper function to format seconds into "1d 4h 20m"
 function formatUptime(seconds) {
