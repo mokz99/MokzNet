@@ -1,3 +1,6 @@
+# local testing backend db file
+mokznet.db
+
 # Logs
 logs
 *.log
