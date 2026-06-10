@@ -200,6 +200,42 @@ app.get('/api/guestbook/entries', (req, res) => {
   }
 });
 
+//endpoint to hide or unhide badboy posts
+app.patch('/api/guestbook/entries/:id/visibility', (req, res) => {
+  //verify auth token
+  const authHeader = req.headers['authorization']; 
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token || token !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  //get id for what post to hide and true/false for visibility
+  const entryId = req.params.id;
+  const { is_hidden } = req.body; 
+
+  if (typeof is_hidden !== 'boolean') {
+    return res.status(400).json({ error: 'Missing or invalid is_hidden value (must be true or false).' });
+  }
+
+  //convert bool to numbers used by db. 1=true, 0=false.
+  const numericHiddenState = is_hidden ? 1 : 0;
+
+  try {
+    const stmt = db.prepare('UPDATE guestbook SET is_hidden = ? WHERE id = ?');
+    const result = stmt.run(numericHiddenState, entryId);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Entry not found.' });
+    }
+
+    const actionText = is_hidden ? 'hidden' : 'unhidden';
+    res.json({ success: true, message: `Entry ${entryId} has been successfully ${actionText}.` });
+
+  } catch (error) {
+    res.status(500).json({ error: 'Database error occurred.' });
+  }
+});
+
 // Start server
 app.listen(8081, () => {
   console.log('Backend server running on http://localhost:8081');

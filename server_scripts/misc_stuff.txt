@@ -1,0 +1,28 @@
+browser post command for testing backend.
+
+fetch('https://api.mokz.net/api/guestbook/entries', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    username: 'MrOpera',
+    message: 'Hello from the browser console!'
+  }),
+})
+.then(response => response.json())
+.then(data => console.log('Success:', data))
+.catch(error => console.error('Error:', error));
+
+brower patch command for toggling visibility for posts
+
+fetch('https://api.mokz.net/api/guestbook/entries/5/visibility', {
+  method: 'PATCH',
+  headers: {
+    'Authorization': 'Bearer your_super_secret_token',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ is_hidden: true })
+})
+.then(res => res.json())
+.then(data => console.log(data));
