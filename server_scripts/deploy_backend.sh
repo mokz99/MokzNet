@@ -25,7 +25,7 @@ docker run -d \
   -v /sys:/sys:ro \
   -v /home/pi/mokznet/mokznet.db:/app/mokznet.db \
   -v /home/pi/mokznet/guestbook_avatar_images:/app/guestbook_avatar_images \
-  --env-file /home/pi/mokznet/.env
+  --env-file /home/pi/mokznet/.env \
   --restart unless-stopped \
   $IMAGE_NAME
 
