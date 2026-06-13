@@ -14,7 +14,7 @@ const Navbar = () => {
       {/* Bottom Section: Links */}
       <ul className="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/lobby">Lobby</a></li>
+        <li><a href="/guestbook">Guestbook</a></li>
         <li><a href="/games">Games</a></li>
       </ul>
     </nav>

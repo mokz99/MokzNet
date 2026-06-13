@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 // Pages
 import Home from './Home';
-import Lobby from './Lobby';
+import Guestbook from './Guestbook';
 import Games from './Games';
 
 // code stuff
@@ -20,7 +20,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/lobby" element={<Lobby />} />
+          <Route path="/guestbook" element={<Guestbook />} />
           <Route path="/games" element={<Games />} />
         </Routes>
       </div>

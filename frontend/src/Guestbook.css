@@ -1,0 +1,101 @@
+#guestbook_rules_and_form {
+  background: var(--default-bg);
+  display: flex;
+  text-align: left;
+
+  border-bottom: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#guestbook_rules {
+  border-right: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
+}
+
+#guestbook_form {
+  box-shadow: var(--default-border-shadow);
+}
+
+.guestbook_form_body {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* Aligns top edges together */
+  gap: 20px;               /* Clean spacing between canvas and form */
+  margin-top: 15px;        /* Pushes it down slightly below the H2 header */
+}
+
+/* Forces the inputs inside the form to stack vertically on the right */
+.guestbook_form_body form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;            /* Forces the form fields to fill up the remaining space */
+  gap: 10px;               /* Space between your input fields and textarea */
+  height: 200px;
+}
+
+/* Fixes size of the text area*/
+.guestbook_form_body form textarea {
+  resize: none;
+  flex-grow: 1;
+}
+
+#guestbook_wrapper {
+  background: var(--default-bg);
+  display: flex;
+  text-align: left;
+
+  border-top: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#guestbook_content {
+  border-right: var(--default-border-size);
+  border-bottom: var(--default-border-size);
+  border-image-source: var(--default-border-image);
+  border-image-slice: var(--default-border-slice);
+  box-shadow: var(--default-border-shadow);
+}
