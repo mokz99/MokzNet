@@ -1,9 +1,11 @@
+import default_avatar_wizard from './assets/mokznet_guestbook_wizard.png'
+
 export default function GuestbookEntry({ username, date, message, avatarUrl }) {
     return (
         <div className="guestbook-entry">
             <div className="entry-avatar">
                 <img
-                    src={avatarUrl || "https://placehold.co/150"}
+                    src={avatarUrl || default_avatar_wizard}
                     alt={`${username}'s avatar`}
                 />
             </div>
