@@ -41,15 +41,22 @@ export default function Guestbook() {
         <section id="guestbook_wrapper">
             <div id="guestbook_content">
                 <h2>Guestbook signatures</h2><br />
-                {dummySignatures.map((sig) => (
-                    <GuestbookEntry
-                        key={sig.id}
-                        username={sig.username}
-                        date={sig.date}
-                        message={sig.message}
-                        avatarUrl={sig.avatarUrl}
-                    />
-                ))}
+                <div className='signatures-list'>
+                    {dummySignatures.map((sig) => (
+                        <GuestbookEntry
+                            key={sig.id}
+                            username={sig.username}
+                            date={sig.date}
+                            message={sig.message}
+                            avatarUrl={sig.avatarUrl}
+                        />
+                    ))}
+                </div>
+                <div className='book-pages'>
+                    <button className='page-btn' type='button'>◀</button>
+                    <span className='page-number'>Page 1 of 5</span>
+                    <button className='page-btn' type='button'>▶</button>
+                </div>
             </div>
         </section>
 
