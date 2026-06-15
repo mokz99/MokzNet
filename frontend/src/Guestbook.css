@@ -99,13 +99,13 @@
   background-position: center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  font-family: "Palatino Linotype", "Palatino", "Georgia", serif;
+  font-family: "Georgia", serif;
   text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.459);
 }
 
 #guestbook_content h2 {
   color: #1a1a1a;
-  font-family: "Palatino Linotype", "Palatino", "Georgia", serif;
+  font-family: "Georgia", serif;
 }
 
 /* Individual user signature card layout */
