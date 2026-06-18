@@ -8,10 +8,14 @@ export default function Guestbook() {
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [avatarDrawing, setAvatarDrawing] = useState(null);
+    // Tracks whether the user is typing ('write') or drawing ('draw')
+    const [viewMode, setViewMode] = useState('write');
+    const [brushSize, setBrushSize] = useState(5);
 
     //fetch entries from backend
     useEffect(() => {
-        fetch('https://api.mokz.net/api/guestbook/entries')
+        fetch('http://localhost:8081/api/guestbook/entries')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to summon guestbook entries');
@@ -58,8 +62,20 @@ export default function Guestbook() {
             </div>
             <div id="guestbook_form">
                 <h2>Sign guestbook</h2><br />
-                <div className="guestbook_form_body">
-                    <canvas width="200" height="200" style={{ background: '#eee' }}></canvas>
+                <div className={`guestbook_form_body ${viewMode === 'draw' ? 'hidden' : ''}`}>
+                    <img
+                        src={avatarDrawing || 'https://upload.wikimedia.org/wikipedia/en/8/87/Keyboard_cat.jpg'}
+                        alt="Avatar Preview"
+                        className="guestbook-img-preview"
+                        onClick={() => setViewMode('draw')}
+                        style={{
+                            width: '200px',
+                            height: '200px',
+                            background: '#eee',
+                            objectFit: 'contain',
+                            cursor: 'pointer'
+                        }}
+                    />
                     <form>
                         <input type="text" id="username" placeholder="Your name..." />
                         <textarea name="message" id="message" placeholder="Write your message..."></textarea>
@@ -71,6 +87,39 @@ export default function Guestbook() {
                         </select>
                         <button type="submit">Submit Message</button>
                     </form>
+                </div>
+                <div className={`guestbook_canvas_workspace ${viewMode === 'write' ? 'hidden' : ''}`}>
+                    <canvas
+                        width="500"
+                        height="500"
+                        style={{
+                            background: '#fff',
+                            border: '2px solid #ccc',
+                            display: 'block',
+                            margin: '0 auto',
+                            width: '100%',
+                        }}
+                    ></canvas>
+                    <div className="canvas_controls" style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '15px', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', gap: '15px', alignItems: 'center', justifyContent: 'center' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+                                Brush Size:
+                                <input type="number" min="1" max="20" value={brushSize} onChange={(e) => setBrushSize(e.target.value)} />
+                            </label>
+
+                            <button type="button">Eraser</button>
+
+                            <button type="button">Undo</button>
+
+                            <button type="button">Redo</button>
+
+                            <button type="button">Clear</button>
+                        </div>
+                        <div>
+                            <button type="button" onClick={() => setViewMode('write')}>Save & Return ◀</button>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </section>
