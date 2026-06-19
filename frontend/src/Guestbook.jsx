@@ -68,8 +68,9 @@ export default function Guestbook() {
         const y = e.clientY - rect.top;
 
         if (currentTool === 'eraser') {
-            ctx.strokeStyle = '#ffffff';
+            ctx.globalCompositeOperation = 'destination-out';
         } else {
+            ctx.globalCompositeOperation = 'source-over';
             ctx.strokeStyle = '#000000';
         }
         ctx.beginPath();
@@ -130,13 +131,15 @@ export default function Guestbook() {
             const previousImage = new Image();
             previousImage.src = newUndo[newUndo.length - 1]; // Get the image right before the one we popped
             previousImage.onload = () => {
+                ctx.globalCompositeOperation = 'source-over';
                 ctx.drawImage(previousImage, 0, 0);
+                ctx.globalCompositeOperation = currentTool === 'eraser' ? 'destination-out' : 'source-over';
             };
         }
     };
 
     const handleRedo = () => {
-        if (redoStack.length === 0) return; // Nothing to redo!
+        if (redoStack.length === 0) return;
 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
@@ -153,7 +156,10 @@ export default function Guestbook() {
         const redoImage = new Image();
         redoImage.src = poppedSnapshot;
         redoImage.onload = () => {
+            ctx.globalCompositeOperation = 'source-over';
             ctx.drawImage(redoImage, 0, 0);
+            //make sure to reset draw/erase operation
+            ctx.globalCompositeOperation = currentTool === 'eraser' ? 'destination-out' : 'source-over';
         };
     };
 
