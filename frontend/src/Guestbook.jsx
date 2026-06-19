@@ -1,6 +1,6 @@
 import './App.css'
 import './Guestbook.css'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import GuestbookEntry from './GuestbookEntry';
 
 export default function Guestbook() {
@@ -12,6 +12,11 @@ export default function Guestbook() {
     // Tracks whether the user is typing ('write') or drawing ('draw')
     const [viewMode, setViewMode] = useState('write');
     const [brushSize, setBrushSize] = useState(5);
+    const [currentTool, setCurrentTool] = useState('brush');
+    const [isDrawing, setIsDrawing] = useState(false);
+    const [undoStack, setUndoStack] = useState([]);
+    const [redoStack, setRedoStack] = useState([]);
+    const canvasRef = useRef(null);
 
     //fetch entries from backend
     useEffect(() => {
@@ -50,6 +55,119 @@ export default function Guestbook() {
     };
     if (loading) return <div className="guestbook-loading">Loading scrolls...</div>;
     if (error) return <div className="guestbook-error">Error: {error}</div>;
+
+    //canvas drawing (click)
+    const startDrawing = (e) => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        // Find where the mouse clicked relative to the canvas box
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (currentTool === 'eraser') {
+            ctx.strokeStyle = '#ffffff';
+        } else {
+            ctx.strokeStyle = '#000000';
+        }
+        ctx.beginPath();
+        ctx.lineWidth = brushSize;
+        ctx.moveTo(x, y);
+
+        setIsDrawing(true);
+    };
+    //canvas drawing (move cursor)
+    const draw = (e) => {
+        if (!isDrawing) return;
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        // Find where the mouse is moving to
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        //create line
+        ctx.lineTo(x, y);
+        //render the line black
+        ctx.stroke();
+    };
+
+    const stopDrawing = () => {
+        if (!isDrawing) return;
+
+        setIsDrawing(false);
+
+        const canvas = canvasRef.current;
+        const snapshot = canvas.toDataURL();
+
+        setUndoStack((prev) => [...prev, snapshot]);
+        setRedoStack([]);
+    };
+
+    //handle undo and redo for drawing
+    const handleUndo = () => {
+        if (undoStack.length === 0) return; // Nothing to undo!
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        // 1. Take the current state off the undo stack
+        const newUndo = [...undoStack];
+        const poppedSnapshot = newUndo.pop();
+        setUndoStack(newUndo);
+
+        // 2. Put it onto the redo stack so we can bring it back if needed
+        setRedoStack((prev) => [...prev, poppedSnapshot]);
+
+        // 3. Clear the canvas and draw the *previous* state
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (newUndo.length > 0) {
+            const previousImage = new Image();
+            previousImage.src = newUndo[newUndo.length - 1]; // Get the image right before the one we popped
+            previousImage.onload = () => {
+                ctx.drawImage(previousImage, 0, 0);
+            };
+        }
+    };
+
+    const handleRedo = () => {
+        if (redoStack.length === 0) return; // Nothing to redo!
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        // 1. Take the snapshot from the redo stack
+        const newRedo = [...redoStack];
+        const poppedSnapshot = newRedo.pop();
+        setRedoStack(newRedo);
+
+        // 2. Put it back onto the undo stack
+        setUndoStack((prev) => [...prev, poppedSnapshot]);
+
+        // 3. Draw that snapshot back onto the canvas
+        const redoImage = new Image();
+        redoImage.src = poppedSnapshot;
+        redoImage.onload = () => {
+            ctx.drawImage(redoImage, 0, 0);
+        };
+    };
+
+    const handleClear = () => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        // 1. Physically wipe the canvas pixels clean
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 2. Take a snapshot of this blank canvas and push it to Undo history
+        const snapshot = canvas.toDataURL();
+        setUndoStack((prev) => [...prev, snapshot]);
+        setRedoStack([]); // Reset redo
+    };
 
     return <div>
         <section id="guestbook_rules_and_form">
@@ -90,6 +208,11 @@ export default function Guestbook() {
                 </div>
                 <div className={`guestbook_canvas_workspace ${viewMode === 'write' ? 'hidden' : ''}`}>
                     <canvas
+                        ref={canvasRef}
+                        onMouseDown={startDrawing}
+                        onMouseMove={draw}
+                        onMouseUp={stopDrawing}
+                        onMouseLeave={stopDrawing}
                         width="500"
                         height="500"
                         style={{
@@ -97,28 +220,45 @@ export default function Guestbook() {
                             border: '2px solid #ccc',
                             display: 'block',
                             margin: '0 auto',
-                            width: '100%',
                         }}
                     ></canvas>
                     <div className="canvas_controls" style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '15px', alignItems: 'center' }}>
                         <div style={{ display: 'flex', gap: '15px', alignItems: 'center', justifyContent: 'center' }}>
                             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
                                 Brush Size:
-                                <input type="number" min="1" max="20" value={brushSize} onChange={(e) => setBrushSize(e.target.value)} />
+                                <input type="number" min="1" max="20" value={brushSize}
+                                    onChange={(e) => {
+                                        const rawValue = e.target.value;
+                                        if (rawValue === '') {
+                                            setBrushSize('');
+                                            return;
+                                        }
+                                        const val = Number(rawValue);
+                                        if (val > 20) setBrushSize(20);
+                                        else if (val < 1) setBrushSize(1);
+                                        else setBrushSize(val);
+                                    }}
+                                />
                             </label>
-
-                            <button type="button">Eraser</button>
-
-                            <button type="button">Undo</button>
-
-                            <button type="button">Redo</button>
-
-                            <button type="button">Clear</button>
+                            <button type="button"
+                                onClick={() => {
+                                    // Toggle tool: if erasing, stop erasing. If drawing, start erasing.
+                                    setCurrentTool(currentTool === 'eraser' ? 'brush' : 'eraser');
+                                }}
+                                style={{
+                                    background: currentTool === 'eraser' ? '#000' : '#f0f0f0',
+                                    color: currentTool === 'eraser' ? '#fff' : '#000',
+                                    border: '1px solid #ccc',
+                                    cursor: 'pointer'
+                                }}
+                            >Eraser</button>
+                            <button type="button" onClick={handleUndo}>Undo</button>
+                            <button type="button" onClick={handleRedo}>Redo</button>
+                            <button type="button" onClick={handleClear}>Clear</button>
                         </div>
                         <div>
                             <button type="button" onClick={() => setViewMode('write')}>Save & Return ◀</button>
                         </div>
-
                     </div>
                 </div>
             </div>
