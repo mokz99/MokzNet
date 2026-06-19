@@ -2,6 +2,7 @@ import './App.css'
 import './Guestbook.css'
 import React, { useState, useEffect, useRef } from 'react';
 import GuestbookEntry from './GuestbookEntry';
+import guestbook_placeholder_avatar from './assets/guestbook_placeholder.png'
 
 export default function Guestbook() {
     const [signatures, setSignatures] = useState([]);
@@ -182,14 +183,14 @@ export default function Guestbook() {
                 <h2>Sign guestbook</h2><br />
                 <div className={`guestbook_form_body ${viewMode === 'draw' ? 'hidden' : ''}`}>
                     <img
-                        src={avatarDrawing || 'https://upload.wikimedia.org/wikipedia/en/8/87/Keyboard_cat.jpg'}
+                        src={avatarDrawing || guestbook_placeholder_avatar}
                         alt="Avatar Preview"
                         className="guestbook-img-preview"
                         onClick={() => setViewMode('draw')}
                         style={{
                             width: '200px',
                             height: '200px',
-                            background: '#eee',
+                            background: '#ffffff',
                             objectFit: 'contain',
                             cursor: 'pointer'
                         }}
@@ -257,7 +258,17 @@ export default function Guestbook() {
                             <button type="button" onClick={handleClear}>Clear</button>
                         </div>
                         <div>
-                            <button type="button" onClick={() => setViewMode('write')}>Save & Return ◀</button>
+                            <button type="button"
+                                onClick={() => {
+                                    const canvas = canvasRef.current;
+                                    if (canvas) {
+                                        //get canvas image and save it before we exit
+                                        const finalImage = canvas.toDataURL();
+                                        setAvatarDrawing(finalImage);
+                                    }
+                                    setViewMode('write');
+                                }}
+                            >Save & Return ◀</button>
                         </div>
                     </div>
                 </div>
