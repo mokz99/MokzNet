@@ -298,8 +298,8 @@ export default function Guestbook() {
                         }}
                     />
                     <form onSubmit={handleSubmit}>
-                        <input type="text" id="username" placeholder="Your name..." value={username} onChange={(e) => setUsername(e.target.value)} required />
-                        <textarea name="message" id="message" placeholder="Write your message..." value={message} onChange={(e) => setMessage(e.target.value)} required />
+                        <input type="text" id="username" placeholder="Your name..." value={username} onChange={(e) => setUsername(e.target.value)} required maxLength={50} />
+                        <textarea name="message" id="message" placeholder="Write your message..." value={message} onChange={(e) => setMessage(e.target.value)} required maxLength={200} />
                         <select name="default_avatar" id="avatar_select" value={selectedDefaultAvatar || "placeholder"} onChange={handleSelectDefaultAvatar}>
                             <option value="placeholder" disabled hidden>Optional: select a default avatar</option>
                             <option value="wizard">Wizard</option>
@@ -322,7 +322,6 @@ export default function Guestbook() {
                         height="500"
                         style={{
                             background: '#fff',
-                            border: '2px solid #ccc',
                             display: 'block',
                             margin: '0 auto',
                         }}
