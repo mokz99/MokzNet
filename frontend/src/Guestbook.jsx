@@ -11,6 +11,8 @@ import guestbook_default_avatar_skull from './assets/mokznet_guestbook_skull.png
 
 
 export default function Guestbook() {
+    const [username, setUsername] = useState('');
+    const [message, setMessage] = useState('');
     const [signatures, setSignatures] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
@@ -35,7 +37,7 @@ export default function Guestbook() {
 
     //fetch entries from backend
     useEffect(() => {
-        fetch('http://localhost:8081/api/guestbook/entries')
+        fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/guestbook/entries`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to summon guestbook entries');
@@ -216,6 +218,60 @@ export default function Guestbook() {
         setRedoStack([]); // Reset redo
     };
 
+    const handleSubmit = async (e) => {
+        //dont refresh the page
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('message', message);
+        const activeImageSrc = avatarDrawing || AVATAR_MAP[selectedDefaultAvatar];
+
+        if (activeImageSrc) {
+            try {
+                let imageBlob;
+                // Case A: It's a custom drawing (Base64 Data URL)
+                if (activeImageSrc.startsWith('data:')) {
+                    const response = await fetch(activeImageSrc);
+                    imageBlob = await response.blob();
+                }
+                // Case B: It's a preset avatar (Standard URL path to assets)
+                else {
+                    const response = await fetch(activeImageSrc);
+                    imageBlob = await response.blob();
+                }
+                formData.append('avatar', imageBlob, 'avatar.png');
+            } catch (err) {
+                console.error("Failed to process avatar image file:", err);
+            }
+        }
+        fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/guestbook/entries`, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(async response => {
+                const data = await response.json();
+                return { status: response.status, data: data };
+            })
+            .then(({ status, data }) => {
+                if (status === 201 || data.success) {
+                    console.log(`[Guestbook] Entry saved successfully (ID: ${data.entryId})`);
+                    setUsername('');
+                    setMessage('');
+                    setAvatarDrawing(null);
+                    if (typeof setSelectedDefaultAvatar === 'function') setSelectedDefaultAvatar('');
+                    alert("Message succesfully submitted!");
+                } else {
+                    console.error(`[Guestbook Error] Server returned status ${status}:`, data.error || 'Unknown error');
+                    alert(data.error || "Something went wrong saving your message.");
+                }
+            })
+            .catch(error => {
+                console.error('[Guestbook Network Error] Failed to reach API:', error);
+                alert("Could not connect to the server. Please check your internet connection.");
+            });
+    }
+
     return <div>
         <section id="guestbook_rules_and_form">
             <div id="guestbook_rules">
@@ -241,9 +297,9 @@ export default function Guestbook() {
                             cursor: 'pointer'
                         }}
                     />
-                    <form>
-                        <input type="text" id="username" placeholder="Your name..." />
-                        <textarea name="message" id="message" placeholder="Write your message..."></textarea>
+                    <form onSubmit={handleSubmit}>
+                        <input type="text" id="username" placeholder="Your name..." value={username} onChange={(e) => setUsername(e.target.value)} required />
+                        <textarea name="message" id="message" placeholder="Write your message..." value={message} onChange={(e) => setMessage(e.target.value)} required />
                         <select name="default_avatar" id="avatar_select" value={selectedDefaultAvatar || "placeholder"} onChange={handleSelectDefaultAvatar}>
                             <option value="placeholder" disabled hidden>Optional: select a default avatar</option>
                             <option value="wizard">Wizard</option>
@@ -334,7 +390,7 @@ export default function Guestbook() {
                             username={sig.username}
                             date={sig.date}
                             message={sig.message}
-                            avatarUrl={sig.avatarUrl}
+                            avatarUrl={sig.avatar_filename}
                         />
                     ))}
                 </div>

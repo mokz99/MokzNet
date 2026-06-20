@@ -10,6 +10,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+//this folder must be created manually. the server does not create it on its own.
+app.use('/uploads', express.static(path.join(__dirname, 'guestbook_avatar_images')));
 
 // Helper function to format seconds into "1d 4h 20m"
 function formatUptime(seconds) {

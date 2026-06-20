@@ -1,11 +1,14 @@
 import default_avatar_wizard from './assets/mokznet_guestbook_wizard.png'
 
 export default function GuestbookEntry({ username, date, message, avatarUrl }) {
+
+    const avatarImageSrc = avatarUrl ? `${import.meta.env.VITE_BACKEND_API_URL}/uploads/${avatarUrl}` : default_avatar_wizard;
+
     return (
         <div className="guestbook-entry">
             <div className="entry-avatar">
                 <img
-                    src={avatarUrl || default_avatar_wizard}
+                    src={avatarImageSrc}
                     alt={`${username}'s avatar`}
                 />
             </div>
