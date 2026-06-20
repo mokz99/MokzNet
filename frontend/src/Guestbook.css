@@ -118,6 +118,7 @@
   flex-direction: column;
   gap: 5px;
   width: 100%;
+  min-height: 570px;
 }
 
 .signatures-list .guestbook-entry:last-child {
