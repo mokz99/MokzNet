@@ -3,6 +3,12 @@ import './Guestbook.css'
 import React, { useState, useEffect, useRef } from 'react';
 import GuestbookEntry from './GuestbookEntry';
 import guestbook_placeholder_avatar from './assets/guestbook_placeholder.png'
+import guestbook_default_avatar_wizard from './assets/mokznet_guestbook_wizard_2.png'
+import guestbook_default_avatar_dragon from './assets/mokznet_guestbook_dragon2.png'
+import guestbook_default_avatar_monster from './assets/mokznet_guestbook_monster.png'
+import guestbook_default_avatar_rose from './assets/mokznet_guestbook_rose.png'
+import guestbook_default_avatar_skull from './assets/mokznet_guestbook_skull.png'
+
 
 export default function Guestbook() {
     const [signatures, setSignatures] = useState([]);
@@ -18,6 +24,14 @@ export default function Guestbook() {
     const [undoStack, setUndoStack] = useState([]);
     const [redoStack, setRedoStack] = useState([]);
     const canvasRef = useRef(null);
+    const AVATAR_MAP = {
+        dragon: guestbook_default_avatar_dragon,
+        rose: guestbook_default_avatar_rose,
+        wizard: guestbook_default_avatar_wizard,
+        monster: guestbook_default_avatar_monster,
+        skull: guestbook_default_avatar_skull,
+    };
+    const [selectedDefaultAvatar, setSelectedDefaultAvatar] = useState('');
 
     //fetch entries from backend
     useEffect(() => {
@@ -37,6 +51,32 @@ export default function Guestbook() {
                 setLoading(false);
             });
     }, []);
+
+    const handleSelectDefaultAvatar = (e) => {
+        const value = e.target.value;
+        setSelectedDefaultAvatar(value);
+        setAvatarDrawing(null);
+    };
+
+    const handleOpenCanvas = () => {
+        setViewMode('draw');
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        if (selectedDefaultAvatar && AVATAR_MAP[selectedDefaultAvatar]) {
+            const baseImage = new Image();
+            baseImage.src = AVATAR_MAP[selectedDefaultAvatar];
+            baseImage.onload = () => {
+                ctx.clearRect(0, 0, 500, 500);
+                // Draw the image
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.drawImage(baseImage, 0, 0, 500, 500);
+                ctx.globalCompositeOperation = currentTool === 'eraser' ? 'destination-out' : 'source-over';
+                setUndoStack([canvas.toDataURL()]);
+            };
+        }
+    };
 
     //page management 
     const entriesPerPage = 4;
@@ -189,10 +229,10 @@ export default function Guestbook() {
                 <h2>Sign guestbook</h2><br />
                 <div className={`guestbook_form_body ${viewMode === 'draw' ? 'hidden' : ''}`}>
                     <img
-                        src={avatarDrawing || guestbook_placeholder_avatar}
+                        src={avatarDrawing || AVATAR_MAP[selectedDefaultAvatar] || guestbook_placeholder_avatar}
                         alt="Avatar Preview"
                         className="guestbook-img-preview"
-                        onClick={() => setViewMode('draw')}
+                        onClick={() => handleOpenCanvas()}
                         style={{
                             width: '200px',
                             height: '200px',
@@ -204,11 +244,13 @@ export default function Guestbook() {
                     <form>
                         <input type="text" id="username" placeholder="Your name..." />
                         <textarea name="message" id="message" placeholder="Write your message..."></textarea>
-                        <select name="default_avatar" id="avatar_select" defaultValue="placeholder">
+                        <select name="default_avatar" id="avatar_select" value={selectedDefaultAvatar || "placeholder"} onChange={handleSelectDefaultAvatar}>
                             <option value="placeholder" disabled hidden>Optional: select a default avatar</option>
-                            <option value="dragon">Dragon</option>
-                            <option value="rose">Rose</option>
                             <option value="wizard">Wizard</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="monster">Monster</option>
+                            <option value="rose">Rose</option>
+                            <option value="skull">Skull</option>
                         </select>
                         <button type="submit">Submit Message</button>
                     </form>
@@ -272,6 +314,7 @@ export default function Guestbook() {
                                         const finalImage = canvas.toDataURL();
                                         setAvatarDrawing(finalImage);
                                     }
+                                    setSelectedDefaultAvatar('');
                                     setViewMode('write');
                                 }}
                             >Save & Return ◀</button>
