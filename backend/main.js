@@ -2,6 +2,7 @@ const express = require('express');
 const si = require('systeminformation');
 const cors = require('cors');
 const multer = require('multer');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 const Database = require('better-sqlite3');
 const db = new Database(path.join(__dirname, 'mokznet.db'));
@@ -12,33 +13,38 @@ app.use(cors());
 app.use(express.json());
 //this folder must be created manually. the server does not create it on its own.
 app.use('/uploads', express.static(path.join(__dirname, 'guestbook_avatar_images')));
+//rate limit setting - used to get users actual info instead of the cloudflare proxy
+app.set('trust proxy', (ip) => {
+  // trusts localhost for testing. and cloudflare tunnel which runs locally.
+  return ip === '127.0.0.1' || ip === '::1';
+});
 
 // Helper function to format seconds into "1d 4h 20m"
 function formatUptime(seconds) {
   const days = Math.floor(seconds / (3600 * 24));
   const hours = Math.floor((seconds % (3600 * 24)) / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
-  
+
   let result = "";
   if (days > 0) result += `${days}d `;
   if (hours > 0) result += `${hours}h `;
   result += `${minutes}m`;
-  
+
   return result;
 }
 
 // Helper method to store image files for guest book
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'guestbook_avatar_images/'); 
+    cb(null, 'guestbook_avatar_images/');
   },
   filename: (req, file, cb) => {
     const rawUsername = req.body.username || 'anonymous';
-    
+
     //clean username. no hacking allowed! only letters/numbers are permitted.
     let cleanUsername = rawUsername
       .toLowerCase()
-      .replace(/\s+/g, '-') 
+      .replace(/\s+/g, '-')
       .replace(/[^a-z0-9_-]/g, '');
 
     //If the user used ONLY emojis/special chars, cleanUsername becomes empty and we call him guest.
@@ -54,12 +60,32 @@ const storage = multer.diskStorage({
 
     //Example output: "hacker-man_1717800000000.png"
     const uniqueFilename = `${cleanUsername}_${timestamp}${ext}`;
-    
+
     cb(null, uniqueFilename);
   }
 });
 
 const upload = multer({ storage: storage });
+
+const guestbookLimiter = rateLimit({
+  windowMs: 7 * 24 * 60 * 60 * 1000, // 1 week
+  //windowMs: 100 * 1000, // 100 seconds for testing locally
+  max: 1, // Only 1 post allowed per week per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  statusCode: 429,
+  message: {
+    error: "Hold thy horses, traveler! Thou hast already left a missive recently. Try again next week."
+  },
+  keyGenerator: (req, res, id) => {
+    // If Cloudflare provides an IP, use that.
+    if (req.headers['cf-connecting-ip']) {
+      return req.headers['cf-connecting-ip'];
+    }
+    // Otherwise (on localhost), use the library's safe, pre-configured IP generator
+    return id;
+  }
+});
 
 // Disk endpoint (total, used, percent)
 app.get('/api/disk', async (req, res) => {
@@ -123,16 +149,16 @@ app.get('/api/uptime', async (req, res) => {
   }
 });
 
-app.post('/api/guestbook/entries', upload.single('avatar'), (req, res) => {
+app.post('/api/guestbook/entries', guestbookLimiter, upload.single('avatar'), (req, res) => {
   try {
     const username = req.body.username ? String(req.body.username).trim() : '';
     const message = req.body.message ? String(req.body.message).trim() : '';
-    
+
     //prevent blank fields
     if (!username || !message) {
       return res.status(400).json({ error: 'Username and message are required and cannot be empty whitespace.' });
     }
-    
+
     //these limits should match values in the frontend
     if (username.length > 50 || message.length > 200) {
       return res.status(400).json({ error: 'Data exceeds maximum allowed character limits.' });
@@ -187,7 +213,7 @@ app.get('/api/guestbook/entries', (req, res) => {
       WHERE is_hidden = 0
     `);
     const totalEntries = countStmt.get().total;
-    
+
     const totalPages = Math.ceil(totalEntries / limit);
 
     return res.status(200).json({
@@ -211,7 +237,7 @@ app.get('/api/guestbook/entries', (req, res) => {
 //endpoint to hide or unhide badboy posts
 app.patch('/api/guestbook/entries/:id/visibility', (req, res) => {
   //verify auth token
-  const authHeader = req.headers['authorization']; 
+  const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   if (!token || token !== process.env.ADMIN_TOKEN) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -219,7 +245,7 @@ app.patch('/api/guestbook/entries/:id/visibility', (req, res) => {
 
   //get id for what post to hide and true/false for visibility
   const entryId = req.params.id;
-  const { is_hidden } = req.body; 
+  const { is_hidden } = req.body;
 
   if (typeof is_hidden !== 'boolean') {
     return res.status(400).json({ error: 'Missing or invalid is_hidden value (must be true or false).' });
