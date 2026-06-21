@@ -1,4 +1,4 @@
-import default_avatar_wizard from './assets/mokznet_guestbook_wizard.png'
+import default_avatar_wizard from './assets/mokznet_guestbook_wizard_2.png'
 
 export default function GuestbookEntry({ username, date, message, avatarUrl }) {
 
