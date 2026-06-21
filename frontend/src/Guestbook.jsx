@@ -275,7 +275,7 @@ export default function Guestbook() {
             <div id="guestbook_rules">
                 <h2>Welcome to the guestbook</h2><br />
                 <p>Say hello, and draw a custom avatar, or select a default image 📖🪶</p><br />
-                <p>No personal info or explicit content. Keep it civil or the entry will be removed 😇</p><br />
+                <p>No personal info, no real names and no explicit content. Otherwise the entry will be removed 😇</p><br />
                 <p>Posting is limited to about once pr week to prevent my server exploding 🔥</p>
                 <br />
             </div>
@@ -296,7 +296,7 @@ export default function Guestbook() {
                         }}
                     />
                     <form onSubmit={handleSubmit}>
-                        <input type="text" id="username" placeholder="Your name..." value={username} onChange={(e) => setUsername(e.target.value)} required maxLength={50} />
+                        <input type="text" id="username" placeholder="Your alias..." value={username} onChange={(e) => setUsername(e.target.value)} required maxLength={50} />
                         <textarea name="message" id="message" placeholder="Write your message..." value={message} onChange={(e) => setMessage(e.target.value)} required maxLength={200} />
                         <select name="default_avatar" id="avatar_select" value={selectedDefaultAvatar || "placeholder"} onChange={handleSelectDefaultAvatar}>
                             <option value="placeholder" disabled hidden>Optional: select a default avatar</option>
