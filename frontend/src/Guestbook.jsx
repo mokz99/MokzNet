@@ -15,6 +15,7 @@ export default function Guestbook() {
     const [message, setMessage] = useState('');
     const [signatures, setSignatures] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [paginationMeta, setPaginationMeta] = useState({ totalPages: 1 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [avatarDrawing, setAvatarDrawing] = useState(null);
@@ -35,24 +36,25 @@ export default function Guestbook() {
     };
     const [selectedDefaultAvatar, setSelectedDefaultAvatar] = useState('');
 
-    //fetch entries from backend
+    // fetch entries from backend
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/guestbook/entries`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to summon guestbook entries');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setSignatures(data.data);
+        fetchEntries(currentPage);
+    }, [currentPage]);
+
+    const fetchEntries = (page) => {
+        setLoading(true);
+        fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/guestbook/entries?page=${page}&limit=4`)
+            .then(res => res.json())
+            .then(resBody => {
+                setSignatures(resBody.data);
+                setPaginationMeta(resBody.metadata);
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch(err => {
                 setError(err.message);
                 setLoading(false);
             });
-    }, []);
+    };
 
     const handleSelectDefaultAvatar = (e) => {
         const value = e.target.value;
@@ -81,23 +83,16 @@ export default function Guestbook() {
     };
 
     //page management 
-    const entriesPerPage = 4;
-    const indexOfLastEntry = currentPage * entriesPerPage;
-    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const sortedSignatures = [...signatures].sort((a, b) => {
-        return new Date(b.created_at) - new Date(a.created_at);
-    });
-    const currentEntries = sortedSignatures.slice(indexOfFirstEntry, indexOfLastEntry);
-    const totalPages = Math.ceil(signatures.length / entriesPerPage) || 1;
-
+    const currentEntries = signatures;
+    const totalPages = paginationMeta.totalPages;
     const nextPage = () => {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
     const prevPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
-    if (loading) return <div className="guestbook-loading">Loading scrolls...</div>;
-    if (error) return <div className="guestbook-error">Error: {error}</div>;
+    if (loading && signatures.length === 0) return <div className="guestbook-loading">Loading scrolls...</div>;
+    if (error && signatures.length === 0) return <div className="guestbook-error">Error: {error}</div>;
 
     //canvas drawing (click)
     const startDrawing = (e) => {
@@ -260,6 +255,9 @@ export default function Guestbook() {
                     setMessage('');
                     setAvatarDrawing(null);
                     if (typeof setSelectedDefaultAvatar === 'function') setSelectedDefaultAvatar('');
+                    //reload entries
+                    setCurrentPage(1);
+                    fetchEntries(1);
                     alert("Message succesfully submitted!");
                 } else {
                     console.error(`[Guestbook Error] Server returned status ${status}:`, data.error || 'Unknown error');

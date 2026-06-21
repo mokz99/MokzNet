@@ -92,7 +92,8 @@
   background-size: 100% 100%;
   background-repeat: no-repeat;
   font-family: "Georgia", serif;
-  text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.459);
+  /* Shadow commented out for now. It just looks too blurry. */
+  text-shadow: 0px 0px 7px rgba(0, 0, 0, 0);
 }
 
 #guestbook_content h2 {
@@ -157,6 +158,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 .entry-date {
@@ -175,6 +178,8 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 .book-pages {

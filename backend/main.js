@@ -125,11 +125,17 @@ app.get('/api/uptime', async (req, res) => {
 
 app.post('/api/guestbook/entries', upload.single('avatar'), (req, res) => {
   try {
-    const { username, message } = req.body;
+    const username = req.body.username ? String(req.body.username).trim() : '';
+    const message = req.body.message ? String(req.body.message).trim() : '';
     
-    //validation to make sure fields arent blank
-    if (!username || !username.trim() || !message || !message.trim()) {
-      return res.status(400).json({ error: 'Username and message are required.' });
+    //prevent blank fields
+    if (!username || !message) {
+      return res.status(400).json({ error: 'Username and message are required and cannot be empty whitespace.' });
+    }
+    
+    //these limits should match values in the frontend
+    if (username.length > 50 || message.length > 200) {
+      return res.status(400).json({ error: 'Data exceeds maximum allowed character limits.' });
     }
 
     //Set filename based on value genereted by Multer via the multer.diskStorage configuration
