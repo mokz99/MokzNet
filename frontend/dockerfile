@@ -1,5 +1,9 @@
 # Stage 1: Build the app
 FROM node:20-bookworm-slim AS build
+
+ARG VITE_BACKEND_API_URL
+ENV VITE_BACKEND_API_URL=$VITE_BACKEND_API_URL
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
