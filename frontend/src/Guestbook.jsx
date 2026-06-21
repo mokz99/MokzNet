@@ -43,7 +43,7 @@ export default function Guestbook() {
 
     const fetchEntries = (page) => {
         setLoading(true);
-        fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/guestbook/entries?page=${page}&limit=4`)
+        fetch(`${window.APP_CONFIG.VITE_BACKEND_API_URL}/api/guestbook/entries?page=${page}&limit=4`)
             .then(res => res.json())
             .then(resBody => {
                 setSignatures(resBody.data);
@@ -240,7 +240,7 @@ export default function Guestbook() {
                 console.error("Failed to process avatar image file:", err);
             }
         }
-        fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/guestbook/entries`, {
+        fetch(`${window.APP_CONFIG.VITE_BACKEND_API_URL}/api/guestbook/entries`, {
             method: 'POST',
             body: formData,
         })
