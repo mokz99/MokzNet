@@ -275,7 +275,7 @@ export default function Guestbook() {
             <div id="guestbook_rules">
                 <h2>Welcome to the guestbook</h2><br />
                 <p>Say hello, and draw a custom avatar, or select a default image 📖🪶</p><br />
-                <p>Please keep it civil or i will remove the post 😇</p><br />
+                <p>No personal info or explicit content. Keep it civil or the entry will be removed 😇</p><br />
                 <p>Posting is limited to about once pr week to prevent my server exploding 🔥</p>
                 <br />
             </div>
@@ -328,7 +328,7 @@ export default function Guestbook() {
                         <div style={{ display: 'flex', gap: '15px', alignItems: 'center', justifyContent: 'center' }}>
                             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
                                 Brush Size:
-                                <input type="number" min="1" max="20" value={brushSize}
+                                <input type="number" min="3" max="10" value={brushSize}
                                     onChange={(e) => {
                                         const rawValue = e.target.value;
                                         if (rawValue === '') {
