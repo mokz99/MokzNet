@@ -4,12 +4,16 @@
 # 30 2 * * * /home/pi/mokznet/backup_db_and_images.sh > /dev/null 2>&1
 
 cd /home/pi/mokznet
+TIMESTAMP=$(date +"%Y-%m-%d_%H%M")
 
 # backup database
-TIMESTAMP=$(date +"%Y-%m-%d_%H%M")
-BACKUP_NAME="mokznet_backup_${TIMESTAMP}.db"
-sqlite3 mokznet.db ".backup ${BACKUP_NAME}"
-rclone copy ./${BACKUP_NAME} google_drive_simon:mokznet_rclone_backups/database_backups
-rm ${BACKUP_NAME}
+DB_BACKUP_NAME="mokznet_backup_${TIMESTAMP}.db"
+sqlite3 mokznet.db ".backup ${DB_BACKUP_NAME}"
+rclone copy ./${DB_BACKUP_NAME} google_drive_simon:mokznet_rclone_backups/database_backups
+rm ${DB_BACKUP_NAME}
 
-# todo backup images - same idea except its a folder
+# backup images
+IMAGES_BACKUP_NAME="guestbook_avatars_${TIMESTAMP}.tar.gz"
+tar -czf ${IMAGES_BACKUP_NAME} ./guestbook_avatar_images
+rclone copy ./${IMAGES_BACKUP_NAME} google_drive_simon:mokznet_rclone_backups/guestbook_images_backups
+rm ${IMAGES_BACKUP_NAME}
