@@ -11,6 +11,15 @@
   &>div {
     flex: 1 1 0;
     padding: 32px;
+    box-sizing: border-box;
+
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
   }
 }
 
@@ -19,6 +28,10 @@
   border-image-source: var(--default-border-image);
   border-image-slice: var(--default-border-slice);
   box-shadow: var(--default-border-shadow);
+
+  @media (max-width: 1024px) {
+    border-bottom: var(--default-border-size);
+  }
 }
 
 #guestbook_form {
@@ -29,11 +42,13 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  /* Aligns top edges together */
   gap: 20px;
-  /* Clean spacing between canvas and form */
   margin-top: 15px;
-  /* Pushes it down slightly below the H2 header */
+
+  @media (max-width: 550px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 /* Forces the inputs inside the form to stack vertically on the right */
