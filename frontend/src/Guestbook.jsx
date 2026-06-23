@@ -349,10 +349,17 @@ export default function Guestbook() {
                 <div className={`guestbook_canvas_workspace ${viewMode === 'write' ? 'hidden' : ''}`}>
                     <canvas
                         ref={canvasRef}
+                        //browser
                         onMouseDown={startDrawing}
                         onMouseMove={draw}
                         onMouseUp={stopDrawing}
                         onMouseLeave={stopDrawing}
+                        //touch-screens
+                        onTouchStart={startDrawing}
+                        onTouchMove={draw}
+                        onTouchEnd={stopDrawing}
+                        onTouchCancel={stopDrawing}
+                        //misc
                         width="500"
                         height="500"
                         style={{
