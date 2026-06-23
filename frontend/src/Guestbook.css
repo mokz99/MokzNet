@@ -83,8 +83,8 @@
     flex: 1 1 0;
     padding: 32px;
 
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
+    @media (max-width: 550px) {
+      padding: 10px 5px;
     }
   }
 
@@ -96,7 +96,6 @@
 
   @media (max-width: 1024px) {
     flex-direction: column;
-    text-align: center;
   }
 }
 
@@ -126,6 +125,14 @@
   border-bottom: 2px solid #1a1a1a6b;
   width: 100%;
   box-sizing: border-box;
+
+  @media (max-width: 550px) {
+    padding: 0px;
+    gap: 0px;
+    /*this value has to match image size*/
+    grid-template-columns: 75px 1fr;
+    gap: 2px;
+  }
 }
 
 /* The container that holds all signatures */
@@ -147,6 +154,11 @@
   width: 100px;
   height: 100px;
   background: #eeeeee00;
+
+  @media (max-width: 550px) {
+    width: 75px;
+    height: 75px;
+  }
 }
 
 /* Stacks username headers above the actual message body */
@@ -251,7 +263,7 @@
   border-top: 7px solid transparent;
   border-bottom: 7px solid transparent;
   /* length of triangle */
-  border-right: 10px solid #000000;
+  border-right: 10px solid #111111;
 }
 
 .page-next-triangle {
@@ -264,7 +276,7 @@
   border-top: 7px solid transparent;
   border-bottom: 7px solid transparent;
   /* length of triangle */
-  border-left: 10px solid #000000;
+  border-left: 10px solid #111111;
 }
 
 .hidden {
