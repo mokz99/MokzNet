@@ -98,11 +98,22 @@ export default function Guestbook() {
     const startDrawing = (e) => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-
-        // Find where the mouse clicked relative to the canvas box
         const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+
+        let clientX, clientY;
+
+        // Check if it's a touch event or a mouse event
+        if (e.touches && e.touches.length > 0) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+
+        // Find where the mouse/pointer clicked relative to the canvas box
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
         if (currentTool === 'eraser') {
             ctx.globalCompositeOperation = 'destination-out';
@@ -116,21 +127,38 @@ export default function Guestbook() {
 
         setIsDrawing(true);
     };
+
     //canvas drawing (move cursor)
     const draw = (e) => {
         if (!isDrawing) return;
 
+        // Prevent phone touch-scrolling while drawing
+        if (e.cancelable) {
+            e.preventDefault();
+        }
+
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-
-        // Find where the mouse is moving to
         const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        let clientX, clientY;
 
-        //create line
+        // Check if it's a touch event or a mouse event
+        if (e.touches && e.touches.length > 0) {
+            // Phone touch coordinates
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            // Desktop mouse coordinates
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+
+        // Find where the mouse/pointer is moving to
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        //create and render line
         ctx.lineTo(x, y);
-        //render the line black
         ctx.stroke();
     };
 
@@ -322,6 +350,7 @@ export default function Guestbook() {
                             background: '#fff',
                             display: 'block',
                             margin: '0 auto',
+                            touchAction: 'none',
                         }}
                     ></canvas>
                     <div className="canvas_controls" style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '15px', alignItems: 'center' }}>
