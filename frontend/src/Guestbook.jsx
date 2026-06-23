@@ -96,6 +96,9 @@ export default function Guestbook() {
 
     //canvas drawing (click)
     const startDrawing = (e) => {
+        //mobile phone fix
+        if (e.persist) e.persist();
+
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         const rect = canvas.getBoundingClientRect();
@@ -111,9 +114,14 @@ export default function Guestbook() {
             clientY = e.clientY;
         }
 
-        // Find where the mouse/pointer clicked relative to the canvas box
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
+
+
+        //adjust offset if canvas size gets smaller on phones
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        // Find where the mouse/pointer is moving to
+        const x = (clientX - rect.left) * scaleX;
+        const y = (clientY - rect.top) * scaleY;
 
         if (currentTool === 'eraser') {
             ctx.globalCompositeOperation = 'destination-out';
@@ -133,9 +141,8 @@ export default function Guestbook() {
         if (!isDrawing) return;
 
         // Prevent phone touch-scrolling while drawing
-        if (e.cancelable) {
-            e.preventDefault();
-        }
+        if (e.cancelable) e.preventDefault();
+        if (e.persist) e.persist();
 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
@@ -153,10 +160,12 @@ export default function Guestbook() {
             clientY = e.clientY;
         }
 
+        //adjust offset if canvas size gets smaller on phones
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
         // Find where the mouse/pointer is moving to
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
-
+        const x = (clientX - rect.left) * scaleX;
+        const y = (clientY - rect.top) * scaleY;
         //create and render line
         ctx.lineTo(x, y);
         ctx.stroke();
@@ -350,6 +359,7 @@ export default function Guestbook() {
                             background: '#fff',
                             display: 'block',
                             margin: '0 auto',
+                            maxWidth: '100%',
                             touchAction: 'none',
                         }}
                     ></canvas>
