@@ -382,8 +382,8 @@ export default function Guestbook() {
                                             return;
                                         }
                                         const val = Number(rawValue);
-                                        if (val > 20) setBrushSize(20);
-                                        else if (val < 1) setBrushSize(1);
+                                        if (val > 10) setBrushSize(10);
+                                        else if (val < 3) setBrushSize(3);
                                         else setBrushSize(val);
                                     }}
                                 />
