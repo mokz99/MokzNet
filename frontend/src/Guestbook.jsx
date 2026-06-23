@@ -438,9 +438,9 @@ export default function Guestbook() {
                     ))}
                 </div>
                 <div className='book-pages'>
-                    <button className='page-btn' type='button' onClick={prevPage} disabled={currentPage === 1}>◀</button>
+                    <button className='page-btn' type='button' onClick={prevPage} disabled={currentPage === 1}><span className="page-back-triangle"></span></button>
                     <span className='page-number'>Page {currentPage} of {totalPages}</span>
-                    <button className='page-btn' type='button' onClick={nextPage} disabled={currentPage === totalPages}>▶</button>
+                    <button className='page-btn' type='button' onClick={nextPage} disabled={currentPage === totalPages}><span className="page-next-triangle"></span></button>
                 </div>
             </div>
         </section>

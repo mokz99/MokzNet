@@ -241,6 +241,32 @@
   left: 3px;
 }
 
+.page-back-triangle {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  margin: 2px;
+  /* height of triangle */
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  /* length of triangle */
+  border-right: 10px solid #000000;
+}
+
+.page-next-triangle {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  margin: 2px;
+  /* height of triangle */
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  /* length of triangle */
+  border-left: 10px solid #000000;
+}
+
 .hidden {
   display: none !important;
 }
