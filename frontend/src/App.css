@@ -12,9 +12,10 @@ body {
   border-image-slice: var(--default-border-slice);
   box-shadow: var(--default-border-shadow);
 
-  & > div {
+  &>div {
     flex: 1 1 0;
     padding: 32px;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -28,7 +29,6 @@ body {
 
   @media (max-width: 1024px) {
     flex-direction: column;
-    text-align: center;
   }
 }
 
@@ -42,9 +42,10 @@ body {
   border-image-slice: var(--default-border-slice);
   box-shadow: var(--default-border-shadow);
 
-  & > div {
+  &>div {
     flex: 1 1 0;
     padding: 32px;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -58,7 +59,6 @@ body {
 
   @media (max-width: 1024px) {
     flex-direction: column;
-    text-align: center;
   }
 }
 
@@ -88,19 +88,20 @@ body {
   box-shadow: var(--default-border-shadow);
 }
 
-#hover-effect {
-display: inline-flex;
+.hover-effect {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;         /* Adds space for the highlight to show */
-  border-radius: 6px;        /* Rounds the corners */
-  transition: background 0.2s; 
-  text-decoration: none;
-  color: inherit;
 }
 
 .hover-effect:hover {
-background-color: rgba(255, 255, 255, 0.1); /* Subtle light highlight */
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 #about_and_dashboard ul {
@@ -109,45 +110,10 @@ background-color: rgba(255, 255, 255, 0.1); /* Subtle light highlight */
   display: flex;
   gap: 8px;
   margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
+  
   @media (max-width: 1024px) {
     margin-top: 20px;
     flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
   }
 }
 
