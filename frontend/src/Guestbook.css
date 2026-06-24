@@ -12,7 +12,7 @@
     flex: 1 1 0;
     padding: 32px;
     box-sizing: border-box;
-
+    
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -127,11 +127,23 @@
   box-sizing: border-box;
 
   @media (max-width: 550px) {
-    padding: 0px;
-    gap: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
+    gap: 2px;
+    /*border fix*/
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(
+      to right, 
+      transparent 5%, 
+      #1a1a1a6b 5%, 
+      #1a1a1a6b 95%, 
+      transparent 95%
+    ) 1;
     /*this value has to match image size*/
     grid-template-columns: 75px 1fr;
-    gap: 2px;
+    /*this height is because we now allow 4 lines instead of 3 on phones so the text is bigger than the image which is a fixed size 
+    so we have to set this as the image is smaller on phones*/
+    height: 135px;
   }
 }
 
@@ -196,17 +208,23 @@
 
 .entry-message {
   margin: 0;
+  padding-left: 3px;
+  padding-right: 3px;
   color: #1a1a1a;
-  height: 4.2em;
+  line-height: 1.4;
   word-break: break-all;
   display: block;
   overflow: hidden;
+
   /*webkit is required to make the ... appear*/
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  padding-left: 3px;
-  padding-right: 3px;
+
+  @media (max-width: 550px) {
+    font-size: 13px;
+    -webkit-line-clamp: 4;
+  }
 }
 
 .book-pages {

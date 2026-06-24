@@ -312,7 +312,7 @@ export default function Guestbook() {
             <div id="guestbook_rules">
                 <h2>Welcome to the guestbook</h2><br />
                 <p>Say hello, and draw a custom avatar, or select a default image 📖🪶</p><br />
-                <p>No personal info, no real names and no explicit content. Otherwise i will anonymize or delete the entry 😇</p><br />
+                <p>No personal info, no real full names and no explicit content. Otherwise i will edit or delete the entry 😇</p><br />
                 <p>Posting is limited to about once pr week to prevent my server exploding 🔥</p>
                 <br />
             </div>
