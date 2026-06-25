@@ -164,9 +164,14 @@ app.post('/api/guestbook/entries', guestbookLimiter, upload.single('avatar'), (r
       return res.status(400).json({ error: 'Data exceeds maximum allowed character limits.' });
     }
 
-    //Set filename based on value genereted by Multer via the multer.diskStorage configuration
-    //If the user didn't draw an avatar, we default it to null.
-    const avatar_filename = req.file ? req.file.filename : null;
+    //If custom image file is uploaded then store this as image.
+    //If a default avatar is selected then use that default name as image.
+    let avatar_filename = null;
+    if (req.file) {
+      avatar_filename = req.file.filename;
+    } else if (req.body.defaultAvatarKey) {
+      avatar_filename = `default_${String(req.body.defaultAvatarKey).trim()}`;
+    }
 
     const stmt = db.prepare(`
       INSERT INTO guestbook (username, message, avatar_filename)

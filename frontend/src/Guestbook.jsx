@@ -257,26 +257,22 @@ export default function Guestbook() {
         const formData = new FormData();
         formData.append('username', username);
         formData.append('message', message);
-        const activeImageSrc = avatarDrawing || AVATAR_MAP[selectedDefaultAvatar];
 
-        if (activeImageSrc) {
+        // 1. Case A: They actually drew something on the canvas (Base64 data URL string)
+        if (avatarDrawing && avatarDrawing.startsWith('data:')) {
             try {
-                let imageBlob;
-                // Case A: It's a custom drawing (Base64 Data URL)
-                if (activeImageSrc.startsWith('data:')) {
-                    const response = await fetch(activeImageSrc);
-                    imageBlob = await response.blob();
-                }
-                // Case B: It's a preset avatar (Standard URL path to assets)
-                else {
-                    const response = await fetch(activeImageSrc);
-                    imageBlob = await response.blob();
-                }
+                const response = await fetch(avatarDrawing);
+                const imageBlob = await response.blob();
                 formData.append('avatar', imageBlob, 'avatar.png');
             } catch (err) {
-                console.error("Failed to process avatar image file:", err);
+                console.error("Failed to process custom drawing file:", err);
             }
         }
+        // 2. Case B: They are just using an untouched default image! Send the plain key name.
+        else if (selectedDefaultAvatar && selectedDefaultAvatar.trim() !== '') {
+            formData.append('defaultAvatarKey', selectedDefaultAvatar);
+        }
+
         fetch(`${window.APP_CONFIG.VITE_BACKEND_API_URL}/api/guestbook/entries`, {
             method: 'POST',
             body: formData,
