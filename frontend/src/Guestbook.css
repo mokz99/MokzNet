@@ -12,7 +12,7 @@
     flex: 1 1 0;
     padding: 32px;
     box-sizing: border-box;
-    
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -85,6 +85,7 @@
 
     @media (max-width: 550px) {
       padding: 10px 5px;
+      padding-bottom: 32px;
     }
   }
 
@@ -118,6 +119,7 @@
 
   @media (max-width: 550px) {
     font-size: 1.5rem;
+    margin-bottom: 0px;
   }
 }
 
@@ -138,13 +140,11 @@
     gap: 2px;
     /*border fix*/
     border-bottom: 2px solid transparent;
-    border-image: linear-gradient(
-      to right, 
-      transparent 5%, 
-      #1a1a1a6b 5%, 
-      #1a1a1a6b 95%, 
-      transparent 95%
-    ) 1;
+    border-image: linear-gradient(to right,
+        transparent 5%,
+        #1a1a1a6b 5%,
+        #1a1a1a6b 95%,
+        transparent 95%) 1;
     /*this value has to match image size*/
     grid-template-columns: 75px 1fr;
     /*this height is because we now allow 4 lines instead of 3 on phones so the text is bigger than the image which is a fixed size 
@@ -160,6 +160,11 @@
   gap: 5px;
   width: 100%;
   min-height: 570px;
+
+  @media (max-width: 550px) {
+    min-height: 540px;
+    gap: 0px;
+  }
 }
 
 .signatures-list .guestbook-entry:last-child {
@@ -240,6 +245,11 @@
   align-items: center;
   margin-top: 30px;
   padding-top: 20px;
+
+  @media (max-width: 550px) {
+    margin-top: 5px;
+    padding-top: 0px;
+  }
 }
 
 /* The Page numbers text */
