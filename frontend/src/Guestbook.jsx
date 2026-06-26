@@ -421,7 +421,7 @@ export default function Guestbook() {
 
         <section id="guestbook_wrapper">
             <div id="guestbook_content">
-                <h2>Guestbook signatures</h2><br />
+                <h2>Guestbook Signatures</h2><br />
                 <div className='signatures-list'>
                     {currentEntries.map((sig) => (
                         <GuestbookEntry

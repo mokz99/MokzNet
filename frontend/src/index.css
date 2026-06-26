@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Metamorphous&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&display=swap');
 
 :root {
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -13,8 +14,10 @@
   --navbar-bg: #0f0f0f;
   --terminal-orange-text: rgb(180, 83, 23);
   --terminal-yellow-text: rgb(235, 173, 40);
+  --star-theme-text: rgb(255, 211, 129);
   --orange-glow: 0 0 20px rgba(255, 165, 0, 0.3);
   --yellow-glow: 0 0 20px rgba(255, 165, 0, 0.3);
+  --star-theme-glow: 0 0 20px rgba(240, 214, 165, 0.55);
 
   /*border stuff*/
   --default-border-size: 1px solid rgb(44, 45, 49);

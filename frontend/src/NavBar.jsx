@@ -1,21 +1,28 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import './NavBar.css';
 import youtubeLogo from './assets/youtube.png';
 
 const Navbar = () => {
+  const [currentPath, setCurrentPath] = useState('/');
+
+  useEffect(() => {
+    // Sets the path when the component mounts (e.g., "/", "/guestbook", or "/games")
+    setCurrentPath(window.location.pathname);
+  }, []);
+
   return (
     <nav className="navbar">
       {/* Top Section: Title */}
       <div className="nav-brand">
-        <h1>Mokz.<span style={{color: 'var(--terminal-yellow-text)', textShadow: 'var(--yellow-glow)'}}>Net</span></h1>
-        {/*<h1 style={{backgroundImage: 'linear-gradient(to right, rgb(255, 255, 255), rgb(235, 173, 40))', color: 'transparent', backgroundClip: 'text'}}>Mokz.Net</h1>*/}
+        <h1>Mokz.<span style={{ color: 'var(--star-theme-text)', textShadow: 'var(--star-theme-glow)' }}>Net</span></h1>
       </div>
-      
+
       {/* Bottom Section: Links */}
       <ul className="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/guestbook">Guestbook</a></li>
-        <li><a href="/games">Games</a></li>
+        <li><a href="/" className={currentPath === '/' ? 'active' : ''}>Home</a></li>
+        <li><a href="/guestbook" className={currentPath === '/guestbook' ? 'active' : ''}>Guestbook</a></li>
+        <li><a href="/games" className={currentPath === '/games' ? 'active' : ''}>Games</a></li>
       </ul>
     </nav>
   );

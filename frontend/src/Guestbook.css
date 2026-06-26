@@ -112,8 +112,8 @@
 
 #guestbook_content h2 {
   color: #1a1a1a;
-  font-family: "Hultog", serif;
-  font-size: 2.5rem;
+  font-family: "Aref Ruqaa", cursive;
+  font-size: 2rem;
   text-align: center;
 
   @media (max-width: 550px) {

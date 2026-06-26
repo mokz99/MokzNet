@@ -10,7 +10,7 @@
 }
 
 .nav-brand h1 {
-  font-family: "Goldman", sans-serif;
+  font-family: "Metamorphous", sans-serif;
   font-weight: 400;
   font-style: normal;
   margin: 0;
@@ -39,6 +39,14 @@
 
 .nav-links a:hover {
   color: white;
+}
+
+/* Styling for the active page link */
+.nav-links a.active {
+  color: var(--star-theme-text); 
+  font-weight: 700; 
+  text-shadow: var(--star-theme-glow); 
+  position: relative;
 }
 
 .nav-icon {
