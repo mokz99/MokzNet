@@ -127,8 +127,6 @@ const ServerDashboard = () => {
         <span style={{ color: 'var(--terminal-orange-text)' }}>Memory Used: </span><span style={{ color: 'var(--terminal-yellow-text)' }}>{ramData.used} GB</span><br />
         <span style={{ color: 'var(--terminal-orange-text)' }}>Memory Used %: </span><span style={{ color: 'var(--terminal-yellow-text)' }}>{ramData.percent}%</span><br />
 
-        <span style={{ color: 'var(--terminal-orange-text)' }}>CPU Model: </span><span style={{ color: 'var(--terminal-yellow-text)' }}>{cpuData.model}</span><br />
-        <span style={{ color: 'var(--terminal-orange-text)' }}>CPU Cores: </span><span style={{ color: 'var(--terminal-yellow-text)' }}>{cpuData.cores}</span><br />
         <span style={{ color: 'var(--terminal-orange-text)' }}>CPU Load: </span><span style={{ color: 'var(--terminal-yellow-text)' }}>{cpuData.load}%</span><br />
         <span style={{ color: 'var(--terminal-orange-text)' }}>CPU Temperature: </span><span style={{ color: 'var(--terminal-yellow-text)' }}>{cpuData.temp}°C</span><br />
       </p>
