@@ -14,10 +14,10 @@
   --navbar-bg: #0f0f0f;
   --terminal-orange-text: rgb(180, 83, 23);
   --terminal-yellow-text: rgb(235, 173, 40);
-  --star-theme-text: rgb(255, 211, 129);
+  --star-theme-text: rgb(255, 200, 97);
   --orange-glow: 0 0 20px rgba(255, 165, 0, 0.3);
   --yellow-glow: 0 0 20px rgba(255, 165, 0, 0.3);
-  --star-theme-glow: 0 0 20px rgba(240, 214, 165, 0.55);
+  --star-theme-glow: 0 0 20px rgba(255, 200, 97, 0.6);
 
   /*border stuff*/
   --default-border-size: 1px solid rgb(44, 45, 49);
