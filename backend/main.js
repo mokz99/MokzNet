@@ -58,18 +58,32 @@ const storage = multer.diskStorage({
     const timestamp = Date.now();
     const ext = path.extname(file.originalname);
 
-    //Example output: "hacker-man_1717800000000.png"
-    const uniqueFilename = `${cleanUsername}_${timestamp}${ext}`;
+    //Example output: "hacker-man_1717800000000.png" and enforce png to prevent malicious file formats
+    const uniqueFilename = `${cleanUsername}_${timestamp}.png`;
 
     cb(null, uniqueFilename);
   }
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+  // Check the MIME type to ensure the browser/console actually sent an image/png
+  if (file.mimetype === 'image/png') {
+    cb(null, true); 
+  } else {
+    cb(new Error('Invalid file type! Only real PNG images are allowed.'), false);
+  }
+};
+
+const upload = multer({ 
+  storage: storage, 
+  fileFilter: fileFilter,
+  limits: { 
+    fileSize: 100 * 1024 // 100 KB limit. 
+  }
+});
 
 const guestbookLimiter = rateLimit({
   windowMs: 7 * 24 * 60 * 60 * 1000, // 1 week
-  //windowMs: 100 * 1000, // 100 seconds for testing locally
   max: 1, // Only 1 post allowed per week per IP
   standardHeaders: true,
   legacyHeaders: false,
