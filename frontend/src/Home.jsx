@@ -26,7 +26,7 @@ export default function Home() {
                 </p>
                 <ul>
                     <li>
-                        <a href="https://www.youtube.com/@mokz99" target="_blank" className="hover-effect">
+                        <a href="https://www.youtube.com/channel/UC_X3mh-SjwoqCQxLQ5CuXCA" target="_blank" className="hover-effect">
                             <img src={youtubeLogo} alt="YouTube" style={{ height: '1em', width: 'auto' }} />
                             YouTube
                         </a>
